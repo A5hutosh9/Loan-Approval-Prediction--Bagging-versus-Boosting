@@ -84,6 +84,14 @@ except Exception as exc:
     st.error(str(exc))
     st.stop()
 
+mapping_summary = ", ".join(
+    f"{label!s} → {encoded}" for label, encoded in target_mapping.items()
+)
+st.caption(
+    f"Target encoding: {mapping_summary}. Class 1 is treated as the positive class "
+    "for F1-score and ROC-AUC."
+)
+
 valid = y_raw.notna()
 df = df.loc[valid].copy()
 y = y_raw.loc[valid].astype(int)
