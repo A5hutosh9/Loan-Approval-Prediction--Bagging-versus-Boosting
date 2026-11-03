@@ -1,164 +1,126 @@
-"""Live Gemini explanation helper for experiment results.
-
-Uses Gemini's Interactions API. The generated explanation is stored in
-Streamlit session state so a rerun does not erase it.
-"""
+"""Gemini explanation helper used by the experiment page."""
 import os
-import time
-
 import streamlit as st
 
-
-# Use several currently supported stable Flash models. If one model is
-# temporarily overloaded, the next model can handle the same explanation.
+# These are stable text-generation models in Google's current Gemini API catalogue.
 GEMINI_MODELS = (
     "gemini-3.8-flash",
-    "gemini-3.7-flash",
     "gemini-3.6-flash",
-    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
 )
 
 
-def _get_api_key():
-    """Read the Gemini key without crashing when Streamlit secrets are absent."""
+def get_gemini_api_key():
+    """Read the API key from Streamlit Secrets, then environment variables."""
     try:
         key = st.secrets.get("GEMINI_API_KEY", "")
     except Exception:
         key = ""
-    return key or os.environ.get("GEMINI_API_KEY", "")
+    return (key or os.environ.get("GEMINI_API_KEY", "")).strip()
 
 
-def _is_transient_error(error):
-    """Return True for errors where retrying or switching models can help."""
+def is_quota_error(error):
     message = str(error).lower()
-    transient_markers = (
-        "503",
-        "service_unavailable",
-        "service unavailable",
-        "unavailable",
-        "overloaded",
-        "500",
-        "internal server error",
-        "429",
-        "rate_limit_exceeded",
-        "too_many_requests",
-        "408",
-        "deadline_exceeded",
-        "timeout",
-    )
-    return any(marker in message for marker in transient_markers)
+    return any(token in message for token in (
+        "quota", "resource_exhausted", "daily limit", "billing",
+    ))
 
 
-def _generate_with_fallback(client, prompt):
-    """Generate an explanation, falling back when a model is temporarily busy."""
-    failures = []
-
-    for index, model_name in enumerate(GEMINI_MODELS):
-        try:
-            interaction = client.interactions.create(
-                model=model_name,
-                input=prompt,
-            )
-            explanation = getattr(interaction, "output_text", None)
-
-            if explanation and explanation.strip():
-                return explanation.strip(), model_name
-
-            failures.append(f"{model_name}: empty response")
-        except Exception as error:
-            failures.append(f"{model_name}: {error}")
-
-            # The Gemini SDK already retries transient failures internally.
-            # A short pause here prevents an immediate burst when moving to
-            # the next model.
-            if _is_transient_error(error) and index < len(GEMINI_MODELS) - 1:
-                time.sleep(1.5)
-                continue
-
-            # Authentication, permission, invalid-request, or other client
-            # errors should be shown rather than hidden behind a model switch.
-            if not _is_transient_error(error):
-                raise
-
-    raise RuntimeError("All Gemini models were temporarily unavailable. " + " | ".join(failures))
+def is_retryable_model_error(error):
+    message = str(error).lower()
+    return any(token in message for token in (
+        "503", "service unavailable", "unavailable", "overloaded",
+        "500", "internal server error", "404", "not found",
+        "model_not_found", "unsupported model",
+    ))
 
 
-def render_live_experiment_explanation(
-    results_df, dataset_rows, dataset_columns, target_column
-):
-    """Render a live Gemini explanation of the current experiment."""
-    st.subheader("🤖 Live AI Results Explanation")
-    st.caption(
-        "AI interpretation of this experiment's metrics; not a lending decision."
-    )
+def generate_gemini_text(prompt, api_key=None, max_output_tokens=700):
+    """Generate text with a stable Flash model and a small model fallback chain."""
+    from google import genai
+    from google.genai import types
 
-    api_key = _get_api_key()
-    if not api_key:
-        st.warning(
-            "Live AI is not configured. Add GEMINI_API_KEY under "
-            "Streamlit App → Settings → Secrets."
+    key = (api_key or get_gemini_api_key()).strip()
+    if not key:
+        raise RuntimeError(
+            "Gemini API key is missing. Add GEMINI_API_KEY in Streamlit App → Settings → Secrets."
         )
+
+    client = genai.Client(api_key=key)
+    last_error = None
+
+    for model_name in GEMINI_MODELS:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.25,
+                    max_output_tokens=max_output_tokens,
+                ),
+            )
+            text = getattr(response, "text", None)
+            if text and text.strip():
+                return text.strip(), model_name
+            last_error = RuntimeError(f"{model_name} returned an empty response.")
+        except Exception as error:
+            last_error = error
+            # A quota or credential problem affects the project/key, so stop
+            # instead of wasting calls against more models.
+            if is_quota_error(error) or not is_retryable_model_error(error):
+                raise
+            continue
+
+    raise RuntimeError(
+        "Gemini's available Flash models could not complete the request. "
+        "Please retry later. Details: " + str(last_error)
+    )
+
+
+def render_live_experiment_explanation(results_df, dataset_rows, dataset_columns, target_column):
+    """Render an on-demand, session-cached explanation of experiment metrics."""
+    st.subheader("AI Explanation")
+    st.caption("An optional Gemini-generated interpretation of the current experiment.")
+
+    api_key = get_gemini_api_key()
+    if not api_key:
+        st.info("AI explanations are optional. Add GEMINI_API_KEY in Streamlit Secrets to enable this feature.")
         return
 
-    if st.button(
-        "✨ Generate AI Explanation",
-        key="generate_live_experiment_explanation",
-        type="secondary",
-        use_container_width=True,
-    ):
-        try:
-            from google import genai
+    explanation_key = "experiment_ai_explanation"
+    model_key = "experiment_ai_model"
 
-            metrics_csv = results_df.to_csv(index=False)
-            prompt = f"""You are a careful machine-learning tutor. Explain the following experiment results in clear, concise language for a college project presentation.
-
-Dataset dimensions: {dataset_rows} rows × {dataset_columns} columns
-Target column: {target_column}
-
-Model metrics (CSV):
+    if st.button("✨ Generate AI Explanation", key="generate_experiment_ai", type="primary"):
+        metrics_csv = results_df.to_csv(index=False)
+        prompt = f"""
+You are a careful machine-learning tutor explaining a college project experiment.
+Dataset: {dataset_rows} rows × {dataset_columns} columns.
+Target: {target_column}.
+Use only these supplied results:
 {metrics_csv}
 
-Discuss:
-1. what the metrics mean;
-2. training-validation gaps and possible overfitting;
-3. ROC-AUC versus accuracy and F1;
-4. what can and cannot be concluded from these results; and
-5. limitations.
-
-Use only the supplied values. Do not invent causes or numbers. Do not claim that
-one model is universally best. State that the findings depend on this dataset
-and validation setup and are not real-world lending guarantees."""
-
-            with st.spinner("Generating AI explanation…"):
-                client = genai.Client(api_key=api_key)
-                explanation, model_used = _generate_with_fallback(client, prompt)
-
-            st.session_state["live_experiment_explanation"] = explanation
-            st.session_state["live_experiment_model"] = model_used
-
-        except Exception as exc:
-            message = str(exc).lower()
-
-            if "quota_exceeded" in message or "daily quota" in message:
-                st.error(
-                    "Gemini daily quota has been exhausted. The app is configured "
-                    "correctly, but a new Gemini request cannot be completed until "
-                    "the quota resets."
+Explain accuracy, F1-score, ROC-AUC, the train-validation gap, and the main
+limitations in plain English. Do not invent values, causes, or feature importance.
+Do not claim one model is universally best. State that results depend on this
+dataset and validation design and are not real-world lending guarantees.
+Keep the explanation structured and under 220 words.
+"""
+        try:
+            with st.spinner("Gemini is preparing the explanation..."):
+                explanation, model_used = generate_gemini_text(
+                    prompt, api_key=api_key, max_output_tokens=700
                 )
-            elif _is_transient_error(exc):
-                st.error(
-                    "Gemini is temporarily overloaded. The app tried multiple "
-                    "supported Flash models, but they were all unavailable. "
-                    "Please try again in a few moments."
-                )
+            st.session_state[explanation_key] = explanation
+            st.session_state[model_key] = model_used
+        except Exception as error:
+            if is_quota_error(error):
+                st.error("Gemini free-tier quota is currently exhausted. Model evaluation is complete; try the AI explanation again after the quota resets.")
             else:
-                st.error(f"Could not generate the AI explanation: {exc}")
+                st.error("Gemini could not generate an explanation right now. Check the API key, model access, and connection, then try again.")
+                st.caption(f"Technical detail: {error}")
 
-    explanation = st.session_state.get("live_experiment_explanation")
-    model_used = st.session_state.get("live_experiment_model")
-
+    explanation = st.session_state.get(explanation_key)
     if explanation:
-        if model_used:
-            st.caption(f"Generated with {model_used}.")
-        st.markdown("### AI Explanation")
+        st.markdown('<div class="ai-card"><div class="ai-label">GEMINI AI · EXPERIMENT REVIEW</div></div>', unsafe_allow_html=True)
         st.markdown(explanation)
+        st.caption(f"Generated with {st.session_state.get(model_key, 'Gemini Flash')}.")
