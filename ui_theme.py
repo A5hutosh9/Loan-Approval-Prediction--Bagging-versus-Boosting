@@ -1019,6 +1019,91 @@ def apply_theme():
             }
         }
 
+
+        /* Sidebar fit fix for narrow phones: keep team credit readable. */
+        [data-testid="stSidebar"] {
+            width: 205px !important;
+            min-width: 205px !important;
+            flex: 0 0 205px !important;
+        }
+        [data-testid="stSidebarNav"] {
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+        }
+        [data-testid="stSidebarNav"] a {
+            min-width: 0 !important;
+            padding: 8px 9px !important;
+            margin: 4px 0 !important;
+            transform: none !important;
+        }
+        [data-testid="stSidebarNav"] a p {
+            white-space: normal !important;
+            overflow: visible !important;
+            text-overflow: clip !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            font-size: 13.5px !important;
+            line-height: 1.4 !important;
+        }
+        .bank-brand {
+            box-sizing: border-box !important;
+            width: 100% !important;
+            padding: 14px 12px !important;
+            overflow: hidden !important;
+        }
+        .bank-brand .name {
+            font-size: 17px !important;
+            line-height: 1.25 !important;
+            overflow-wrap: normal !important;
+            word-break: normal !important;
+        }
+        .bank-brand .tagline {
+            font-size: 9px !important;
+            letter-spacing: .7px !important;
+        }
+        .team-credit {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 9px 10px !important;
+            overflow: visible !important;
+        }
+        .team-credit-label {
+            display: block !important;
+            width: 100% !important;
+            font-size: 10px !important;
+            line-height: 1.3 !important;
+            letter-spacing: .8px !important;
+            white-space: nowrap !important;
+            overflow-wrap: normal !important;
+        }
+        .team-credit-name {
+            display: block !important;
+            width: 100% !important;
+            font-size: 17px !important;
+            line-height: 1.25 !important;
+            white-space: nowrap !important;
+            overflow: visible !important;
+            overflow-wrap: normal !important;
+            letter-spacing: .04em !important;
+        }
+        @media (max-width: 760px) {
+            [data-testid="stSidebar"] {
+                width: 205px !important;
+                min-width: 205px !important;
+                flex-basis: 205px !important;
+            }
+            [data-testid="stSidebarNav"] a p {
+                font-size: 13.5px !important;
+            }
+            .bank-brand .name { font-size: 17px !important; }
+            .team-credit-name { font-size: 17px !important; }
+        }
+
         </style>
         """,
         unsafe_allow_html=True,
