@@ -30,6 +30,12 @@ Before using the data beyond the present academic demonstration, document its so
 
 The app loads the serialized artifact using Joblib and supplies a DataFrame containing the 11 applicant attributes listed above. It obtains the predicted class and the class probabilities from the saved estimator/pipeline. The interface also displays an illustrative project risk band using fixed approval-probability thresholds; this is a UI label, not a validated banking risk grade.
 
+### Local explanation method
+
+For a requested individual prediction, the app uses SHAP's model-agnostic permutation explainer around the complete saved pipeline's Approved-class probability. It uses up to 40 deterministic reference rows from the bundled dataset. Categorical inputs are encoded for the SHAP masker and decoded before calling the original pipeline. The result reports signed contributions in probability units and checks that the baseline plus contributions reconciles with the model output.
+
+Gemini is optional and only narrates the measured SHAP evidence. A deterministic local summary remains available when Gemini is unconfigured or unavailable. SHAP contributions are local model attributions, not causal explanations or validated lending rules. Correlated inputs can share attribution, and results depend on the chosen background records and permutation approximation.
+
 The repository's experiment page separately constructs preprocessing pipelines for uploaded datasets:
 - numerical columns: median imputation;
 - categorical columns: most-frequent imputation followed by one-hot encoding;
@@ -75,7 +81,7 @@ Differences between groups do not by themselves demonstrate discrimination or id
 3. The comparison-page metrics are embedded reported values rather than freshly computed values.
 4. The fairness-page metrics are predefined and are not dynamically recomputed from the dataset.
 5. No independent test-set, external-population, calibration, robustness, or uncertainty results are documented.
-6. Gemini explanations are an optional language layer that runs only after a user requests them. On the prediction page, the entered applicant feature values and model output are sent to Google's Gemini API to generate the explanation. Use synthetic demonstration data only. Gemini describes the model output and must not be treated as the source of the prediction or as evidence that the prediction is correct.
+6. SHAP explanations are local attributions relative to a reference sample, not causal explanations. Correlated features can share attribution, and results depend on the background sample and permutation approximation. Gemini is an optional narration layer; when configured, applicant inputs, model output, and SHAP contributions are sent to Google's Gemini API. Use synthetic demonstration data only. Gemini does not produce the prediction and its narrative is not evidence that the prediction is correct.
 7. Model outputs may reflect patterns and limitations in the training data and should not be generalised to other populations.
 
 ## Responsible-use statement
