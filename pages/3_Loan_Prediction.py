@@ -237,7 +237,7 @@ if result:
                     "luxury_assets_value": "Luxury assets (INR)",
                     "bank_asset_value": "Bank assets (INR)",
                 }
-                feature_lines = "\\n".join(
+                feature_lines = "\n".join(
                     f"- {feature_labels.get(name, name)}: {value:,}" if isinstance(value, (int, float)) else f"- {feature_labels.get(name, name)}: {value}"
                     for name, value in values.items()
                 )
