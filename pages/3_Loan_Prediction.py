@@ -205,6 +205,7 @@ if result:
             unsafe_allow_html=True,
         )
 
+        st.caption("PRIVACY: When you request an AI explanation, the applicant fields and model output shown above are sent to Google Gemini. Use synthetic demonstration data only; do not enter real people’s financial or identity details.")
         api_key = get_gemini_api_key()
         if not api_key:
             st.warning(
