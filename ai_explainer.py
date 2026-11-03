@@ -1,7 +1,10 @@
 """Gemini explanation helper used by the experiment page."""
 import html
+import logging
 import os
 import streamlit as st
+
+logger = logging.getLogger(__name__)
 
 # These are stable text-generation models in Google's current Gemini API catalogue.
 GEMINI_MODELS = (
@@ -119,7 +122,7 @@ Keep the explanation structured and under 220 words.
                 st.error("Gemini free-tier quota is currently exhausted. Model evaluation is complete; try the AI explanation again after the quota resets.")
             else:
                 st.error("Gemini could not generate an explanation right now. Check the API key, model access, and connection, then try again.")
-                st.caption(f"Technical detail: {error}")
+                logger.exception("Gemini experiment explanation failed")
 
     explanation = st.session_state.get(explanation_key)
     if explanation:
