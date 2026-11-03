@@ -65,7 +65,7 @@ The prediction interface uses these 11 attributes:
 
 The target is `loan_status` (Approved / Rejected). The source CSV also contains an identifier column; identifiers should not be treated as predictive financial characteristics.
 
-**Dataset provenance is not yet documented.** The repository does not currently identify the original publisher, download URL, collection context, or redistribution licence. Verify and document these details before reusing or redistributing the dataset outside this academic project.
+**Dataset source:** [Loan Approval Prediction Dataset by Archit Sharma on Kaggle](https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset). The repository CSV has the same 4,269-row, 13-column schema and loan fields documented for this source. The Kaggle dataset page's licence metadata was not independently verifiable during this review, so check the current Kaggle page and comply with its displayed terms before redistributing the data.\n\n**Data-quality check:** the committed CSV contains 2,656 Approved and 1,613 Rejected records. A scan found 28 negative values in `residential_assets_value` (minimum: -100,000). Do not silently replace these values: verify the source's meaning and document any cleaning decision before retraining or interpreting the model.
 
 ## Reported model comparison
 
