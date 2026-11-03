@@ -10,22 +10,22 @@ def apply_theme():
         <style>
         :root {
             color-scheme: dark;
-            --bg-0: #06111f;
-            --bg-1: #091a2d;
-            --bg-2: #0d2740;
-            --glass: rgba(18, 43, 68, .72);
-            --glass-strong: rgba(13, 32, 53, .88);
-            --glass-soft: rgba(255, 255, 255, .055);
-            --line: rgba(190, 220, 255, .16);
-            --line-strong: rgba(125, 185, 245, .34);
-            --text: #f2f7ff;
-            --muted: #b9cbe0;
-            --subtle: #8fa9c4;
-            --blue: #55a8ff;
-            --cyan: #5de0e6;
-            --gold: #f4c76b;
-            --green: #55d6a0;
-            --red: #ff8295;
+            --bg-0: #101820;
+            --bg-1: #172923;
+            --bg-2: #263a36;
+            --glass: rgba(38, 58, 54, .34);
+            --glass-strong: rgba(24, 43, 38, .62);
+            --glass-soft: rgba(182, 227, 198, .055);
+            --line: rgba(182, 227, 198, .18);
+            --line-strong: rgba(74, 176, 139, .38);
+            --text: #f3f7f2;
+            --muted: #c5d7cd;
+            --subtle: #9eb8aa;
+            --blue: #168c75;
+            --cyan: #b6e3c6;
+            --gold: #e8c98a;
+            --green: #75d6a7;
+            --red: #ff9292;
         }
 
         html, body, [class*="css"] {
@@ -515,6 +515,206 @@ def apply_theme():
             .section-card { padding: 17px; }
             .metric-value { font-size: 23px; }
         }
+
+        /* Emerald Glass palette: subtle frosted surfaces, high-contrast content. */
+        .stApp, [data-testid="stAppViewContainer"] {
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(22, 140, 117, .17), transparent 36%),
+                radial-gradient(ellipse at 92% 10%, rgba(182, 227, 198, .07), transparent 30%),
+                linear-gradient(145deg, #101820 0%, #172923 55%, #101820 100%) !important;
+        }
+
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, rgba(16, 24, 32, .97), rgba(30, 49, 43, .95)) !important;
+        }
+        [data-testid="stSidebarNav"] a[aria-current="page"] {
+            background: rgba(22, 140, 117, .18) !important;
+            border-color: rgba(116, 205, 169, .30) !important;
+            box-shadow: inset 3px 0 0 #168c75 !important;
+        }
+        [data-testid="stSidebarNav"] a:hover {
+            background: rgba(182, 227, 198, .09) !important;
+            border-color: rgba(182, 227, 198, .20) !important;
+        }
+
+        .hero {
+            background: linear-gradient(118deg, rgba(26, 57, 49, .88), rgba(22, 105, 87, .74) 58%, rgba(30, 88, 69, .68)) !important;
+            border-color: rgba(182, 227, 198, .23) !important;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, .18) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .hero:after {
+            background: radial-gradient(circle, rgba(182, 227, 198, .20), rgba(22, 140, 117, .10) 55%, transparent 72%) !important;
+            opacity: .75 !important;
+        }
+        .hero-title span { color: #b6e3c6 !important; }
+        .hero-badge {
+            background: rgba(243, 247, 242, .07) !important;
+            border-color: rgba(182, 227, 198, .17) !important;
+            backdrop-filter: blur(8px);
+        }
+
+        .section-card, .metric-card, .workflow-step, .ai-card,
+        [data-testid="stExpander"], [data-testid="stVerticalBlockBorderWrapper"] {
+            background: rgba(38, 58, 54, .30) !important;
+            border-color: rgba(182, 227, 198, .15) !important;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .12) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .bank-brand {
+            background: rgba(38, 58, 54, .42) !important;
+            border-color: rgba(182, 227, 198, .18) !important;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .14) !important;
+            backdrop-filter: blur(10px);
+        }
+        .metric-card { min-width: 0; height: auto; }
+        .metric-label, .metric-note, .metric-value {
+            max-width: 100%;
+            white-space: normal !important;
+            overflow: visible !important;
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+        .metric-value {
+            font-size: clamp(19px, 2.2vw, 27px) !important;
+            line-height: 1.22 !important;
+        }
+        [data-testid="stMetric"] { min-width: 0; }
+        [data-testid="stMetricLabel"],
+        [data-testid="stMetricLabel"] p {
+            white-space: normal !important;
+            overflow-wrap: anywhere !important;
+            line-height: 1.35 !important;
+        }
+        [data-testid="stMetricValue"],
+        [data-testid="stMetricValue"] div {
+            white-space: normal !important;
+            overflow: visible !important;
+            overflow-wrap: anywhere !important;
+            word-break: normal !important;
+            text-overflow: clip !important;
+            font-size: clamp(18px, 2.2vw, 30px) !important;
+            line-height: 1.2 !important;
+        }
+        [data-testid="stMetricDelta"] { white-space: normal !important; }
+
+        /* Allow Streamlit columns to wrap instead of squeezing text off-screen. */
+        [data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+            align-items: stretch !important;
+            gap: 12px !important;
+        }
+        [data-testid="stHorizontalBlock"] > [data-testid="column"] {
+            min-width: min(100%, 215px) !important;
+            flex: 1 1 215px !important;
+            width: auto !important;
+        }
+        [data-testid="stVerticalBlock"] { min-width: 0; }
+        .stMarkdown, [data-testid="stMarkdownContainer"],
+        [data-testid="stMarkdownContainer"] * {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.22 !important;
+            overflow-wrap: anywhere;
+            hyphens: auto;
+        }
+        p, li, label, .stCaption {
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+
+        /* Keep tables usable on narrow screens without clipping their content. */
+        [data-testid="stDataFrame"], [data-testid="stTable"] {
+            max-width: 100% !important;
+            overflow-x: auto !important;
+        }
+        [data-testid="stDataFrame"] iframe { max-width: 100% !important; }
+        [data-testid="stImage"] img, .stPlotlyChart, [data-testid="stPyplot"] {
+            max-width: 100% !important;
+        }
+
+        [data-baseweb="input"] > div,
+        [data-baseweb="select"] > div,
+        [data-baseweb="textarea"] > div,
+        [data-testid="stNumberInputContainer"] {
+            background: rgba(16, 24, 32, .72) !important;
+            border-color: rgba(182, 227, 198, .25) !important;
+        }
+        [data-baseweb="popover"], [role="listbox"] {
+            background: #263a36 !important;
+            border-color: rgba(182, 227, 198, .28) !important;
+        }
+        .stButton > button, .stDownloadButton > button {
+            background: rgba(38, 58, 54, .52) !important;
+            border-color: rgba(182, 227, 198, .26) !important;
+        }
+        .stButton > button:hover, .stDownloadButton > button:hover {
+            background: rgba(22, 140, 117, .25) !important;
+            border-color: rgba(182, 227, 198, .44) !important;
+        }
+        div.stButton > button[kind="primary"] {
+            background: linear-gradient(100deg, #126e5c, #168c75 62%, #399b78) !important;
+            border-color: rgba(182, 227, 198, .40) !important;
+            box-shadow: 0 7px 18px rgba(13, 92, 73, .20) !important;
+        }
+        [data-baseweb="tab-list"] {
+            background: rgba(38, 58, 54, .24) !important;
+            border-color: rgba(182, 227, 198, .14) !important;
+        }
+        button[data-baseweb="tab"][aria-selected="true"] {
+            background: rgba(22, 140, 117, .20) !important;
+        }
+        [data-testid="stAlert"] {
+            background: rgba(38, 58, 54, .42) !important;
+            border-color: rgba(182, 227, 198, .22) !important;
+        }
+        .workflow-num {
+            background: linear-gradient(135deg, #126e5c, #168c75) !important;
+            box-shadow: 0 4px 12px rgba(22, 140, 117, .18) !important;
+        }
+        .approval-card {
+            background: rgba(22, 140, 117, .13) !important;
+            border-color: rgba(117, 214, 167, .34) !important;
+        }
+        .approval-title { color: #9be2bd !important; }
+        .ai-card {
+            background: rgba(38, 58, 54, .28) !important;
+            border-color: rgba(182, 227, 198, .20) !important;
+        }
+        .footer-card {
+            background: rgba(38, 58, 54, .25) !important;
+            border-color: rgba(182, 227, 198, .14) !important;
+        }
+
+        @media (max-width: 760px) {
+            .block-container { padding: 1rem .85rem 2.25rem !important; }
+            .hero { padding: 21px 18px !important; border-radius: 17px !important; }
+            .hero-title { font-size: clamp(25px, 7vw, 32px) !important; line-height: 1.14 !important; }
+            .hero-subtitle { font-size: 13px !important; }
+            .hero-badges { gap: 6px !important; }
+            .hero-badge { font-size: 10px !important; padding: 6px 9px !important; }
+            .section-card { padding: 15px !important; }
+            .metric-card { min-height: 0 !important; padding: 14px !important; }
+            .metric-value { font-size: clamp(18px, 5vw, 23px) !important; }
+            [data-testid="stHorizontalBlock"] > [data-testid="column"] {
+                flex-basis: 100% !important;
+                min-width: 100% !important;
+                width: 100% !important;
+            }
+            [data-testid="stDataFrame"] { font-size: 12px !important; }
+            .workflow-step { flex: 1 1 100% !important; }
+            .approval-title, .rejection-title { font-size: clamp(20px, 5.5vw, 26px) !important; }
+        }
+        @media (min-width: 761px) and (max-width: 1100px) {
+            [data-testid="stHorizontalBlock"] > [data-testid="column"] {
+                flex-basis: calc(50% - 12px) !important;
+            }
+        }
+
         </style>
         """,
         unsafe_allow_html=True,
