@@ -204,8 +204,9 @@ if result:
     with ai_tab:
         st.markdown(
             '<div class="ai-card"><div class="ai-label">GEMINI AI · EXPLANATION LAYER</div>'
-            '<div>Ask Gemini to explain the prediction in plain language. The saved ML model '
-            'has already produced the result; Gemini does not make or change the decision.</div></div>',
+            '<div>Gemini explains the predicted class, both probabilities, and the actual applicant inputs. '
+            'It does not calculate feature-level attribution, so it cannot reliably say which feature caused the result. '
+            'The saved ML model has already produced the prediction.</div></div>',
             unsafe_allow_html=True,
         )
 
