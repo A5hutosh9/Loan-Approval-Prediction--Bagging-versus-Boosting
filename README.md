@@ -1,44 +1,58 @@
 # Loan Approval Prediction: Bagging vs. Boosting
 
-**Group 10 | B.Tech Computer Science and Engineering (Artificial Intelligence & Machine Learning)**
+**Group 10 · B.Tech Computer Science and Engineering (Artificial Intelligence & Machine Learning)**
 
-An academic machine-learning project that studies ensemble classification methods on a loan-approval dataset and presents the results through an interactive Streamlit application.
+An academic machine-learning project comparing ensemble classification methods on a loan-approval dataset. The project includes a multi-page Streamlit app, a saved prediction pipeline, an experiment runner, local SHAP explanations, and optional Gemini-generated narration.
 
-> **Academic-use notice:** This repository is an educational prototype. It is not a bank, credit bureau, underwriting system, or financial-advice service. Its predictions must not be used to approve, reject, price, or otherwise make decisions about real loan applicants.
+[![Open the Streamlit app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://loan-approval-prediction-bagging-vs-boosting.streamlit.app)
+[![Python quality checks](https://github.com/A5hutosh9/Loan-Approval-Prediction--Bagging-versus-Boosting/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/A5hutosh9/Loan-Approval-Prediction--Bagging-versus-Boosting/actions/workflows/ci.yml)
 
-## Live Demo
+**Live app:** <https://loan-approval-prediction-bagging-vs-boosting.streamlit.app>
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://loan-approval-prediction-bagging-vs-boosting.streamlit.app)
+> **Academic-use notice:** This is an educational prototype, not a bank, credit bureau, underwriting system, or financial-advice service. Do not use its predictions to approve, reject, price, rank, or otherwise make decisions about real loan applicants.
 
-[Open Loan Approval Prediction App](https://loan-approval-prediction-bagging-vs-boosting.streamlit.app)
+## Contents
+
+- [Project overview](#project-overview)
+- [What the app includes](#what-the-app-includes)
+- [Dataset](#dataset)
+- [Reported model comparison](#reported-model-comparison)
+- [How the experiment runner works](#how-the-experiment-runner-works)
+- [Prediction explanations](#prediction-explanations)
+- [Repository structure](#repository-structure)
+- [Run locally](#run-locally)
+- [Optional Gemini configuration](#optional-gemini-configuration)
+- [Run quality checks](#run-quality-checks)
+- [Limitations and reproducibility](#limitations-and-reproducibility)
+- [Responsible use and security](#responsible-use-and-security)
 
 ## Project overview
 
-The project explores how **Bagging** and **Boosting** approaches behave on a binary loan-status classification task. The repository includes a saved prediction pipeline, a dataset, a multi-page Streamlit interface, an experiment workflow for uploaded CSV files, and an optional Gemini-powered explanation layer.
+The project studies how **Bagging** and **Boosting** behave on a binary loan-status classification task. The Streamlit app is organised around four activities:
 
-The application is organised around four main activities:
+1. **Ensemble comparison** — learn the difference between Bagging and Boosting and review the project's reported model metrics.
+2. **Experiment runner** — upload a binary-classification CSV and evaluate five classifiers using stratified cross-validation.
+3. **Loan prediction** — enter the 11 applicant features expected by the saved model and inspect its prediction and probability estimates.
+4. **Fairness review** — view the predefined education and self-employment group comparisons, with their limitations clearly stated.
 
-1. **Understand ensemble learning** — compare the concepts and reported validation metrics for Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting.
-2. **Run an experiment** — upload a binary-classification CSV, select a target, and evaluate five classifiers using stratified cross-validation.
-3. **Explore a prediction** — enter applicant attributes and obtain a prediction from the saved model artifact.
-4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.
+The interface uses a shared dark Emerald Glass theme and responsive layouts for desktop and mobile screens.
 
-The interface uses a shared Emerald Glass visual theme with subtle translucent panels, responsive column layouts, wrapping metric values, and mobile-friendly tables and charts. The layout is designed for both desktop and phone screens.
+## What the app includes
 
-## Application capabilities
-
-| Area | What it does |
+| Area | Description |
 |---|---|
-| Dataset overview | Displays the repository dataset and basic column/missing-value information |
-| Ensemble comparison | Explains Bagging and Boosting and shows the project's reported model metrics |
-| Experiment runner | Performs preprocessing, stratified cross-validation, metric reporting, ROC curves, and CSV export for an uploaded dataset |
-| Loan prediction | Uses `loan_model.pkl` to generate a class prediction and probability estimates from entered features |
-| AI explanation | Uses local, model-agnostic SHAP attributions for individual loan predictions; Gemini optionally narrates those measured contributions |
-| Fairness analysis | Displays group-level metrics for education and self-employment categories |
+| Dataset overview | Previews the bundled CSV and displays basic column and missing-value information |
+| Ensemble comparison | Explains Bagging and Boosting and displays the reported results for five models |
+| Experiment runner | Uploads a CSV, prepares features, runs stratified cross-validation, and reports evaluation metrics and ROC curves |
+| Loan prediction | Loads `loan_model.pkl` to predict a class and return model probability estimates |
+| Local explainability | Calculates model-agnostic SHAP permutation attributions for an individual prediction |
+| Optional AI narration | Uses Gemini to explain measured SHAP contributions or uploaded-experiment metrics |
 
 ## Dataset
 
-The application describes the bundled dataset as **4,269 records and 13 columns**. The prediction interface uses the following applicant attributes:
+The bundled file is `loan_approval_dataset.csv`. The application describes it as **4,269 rows × 13 columns**.
+
+The prediction interface uses these 11 attributes:
 
 - Number of dependents
 - Education
@@ -49,21 +63,13 @@ The application describes the bundled dataset as **4,269 records and 13 columns*
 - Residential, commercial, and luxury asset values
 - Bank asset value
 
-The target is `loan_status` (Approved / Rejected). The source dataset also contains an identifier column; identifiers should not be treated as predictive financial characteristics.
+The target is `loan_status` (Approved / Rejected). The source CSV also contains an identifier column; identifiers should not be treated as predictive financial characteristics.
 
-## Prediction explainability
-
-The prediction page calculates a local **SHAP permutation explanation** for the saved model pipeline. It treats the complete preprocessing/model pipeline as a black-box probability function, so it does not assume that the serialized artifact is a specific tree estimator. The explanation uses a deterministic sample of up to 40 records from the bundled dataset as the reference background.
-
-SHAP values show how the model's estimated approval probability moves up or down relative to the reference baseline for one input. The two categorical fields are numerically encoded only for SHAP's masking operation and are converted back to their original text values before the model is called. This keeps the estimator's own preprocessing in the prediction path.
-
-Gemini is now an optional narration layer grounded in these measured SHAP values. If Gemini is not configured or the API request fails, the app still shows a deterministic local SHAP summary and the feature-contribution table. The contributions explain this model's behaviour, not causation, bank policy, or the real-world reasons an applicant should be approved or rejected. Correlated features can share attribution, and results depend on the reference dataset and sampling settings.
-
-**Dataset provenance:** The repository currently contains the CSV but does not document its original publisher, download location, or redistribution terms. Those details should be verified and cited before the dataset is reused or redistributed outside this academic project.
+**Dataset provenance is not yet documented.** The repository does not currently identify the original publisher, download URL, collection context, or redistribution licence. Verify and document these details before reusing or redistributing the dataset outside this academic project.
 
 ## Reported model comparison
 
-The Ensemble Methods page displays the following **reported validation values**:
+The Ensemble Methods page currently displays these **reported validation values**:
 
 | Model | Validation accuracy | Validation F1 | Validation ROC-AUC |
 |---|---:|---:|---:|
@@ -73,54 +79,71 @@ The Ensemble Methods page displays the following **reported validation values**:
 | AdaBoost | 0.9590 | 0.9669 | 0.9948 |
 | Gradient Boosting | 0.9803 | 0.9843 | 0.9981 |
 
-These are the values currently encoded in `pages/1_Bagging_vs_Boosting.py`; they are presented as previously reported project results, not as a fresh execution performed when the page opens. The separate **Run Experiment** page computes new metrics for the dataset uploaded by the user. Results can vary with the data, feature handling, class distribution, validation design, and model configuration. The table alone is not evidence of performance on unseen real-world lending populations.
+These values are embedded in `pages/1_Bagging_vs_Boosting.py`; they are **not recalculated** when the page opens. The separate Run Experiment page computes new metrics for the CSV uploaded by the user. Do not assume the two result sources are directly comparable without reproducing the original evaluation setup.
 
-## Method used by the experiment runner
+The table is not evidence of performance on unseen real-world lending populations.
+
+## How the experiment runner works
 
 For an uploaded CSV, the application:
 
 1. lets the user select a binary target column;
-2. normalises common binary target labels;
-3. removes recognised identifier columns and completely empty columns;
+2. maps common labels such as Approved/Rejected, Yes/No, 1/0, and True/False to class labels;
+3. removes recognised identifier columns and columns that are completely empty;
 4. imputes numerical values with the median;
 5. imputes categorical values with the most frequent value and applies one-hot encoding;
-6. evaluates Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting with stratified cross-validation; and
+6. evaluates Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting using stratified cross-validation; and
 7. reports accuracy, F1, ROC-AUC, train/validation gaps, and cross-validated ROC curves.
 
-The experiment page uses a fixed random seed for its cross-validation and model initialisation. This improves repeatability for a fixed software environment and input dataset, but it does not replace a separate external test set or independent replication.
+A fixed random seed is used to improve repeatability for a fixed dataset and software environment. Cross-validation on an uploaded dataset is not a substitute for independent external validation.
+
+## Prediction explanations
+
+The prediction page can calculate a local **SHAP permutation explanation** for the saved model pipeline. The full preprocessing/model pipeline is treated as a black-box probability function; the explanation does not assume that the serialized artifact is a particular tree estimator.
+
+The calculation uses a deterministic reference sample of up to 40 rows from the bundled dataset. Categorical inputs are encoded for SHAP's masking operation and converted back to their original text values before the model is called. The app checks that the baseline plus the feature contributions approximately reconciles with the model's approval-probability output.
+
+Gemini is an optional narration layer. It explains the measured SHAP contributions; it does not make the prediction. If Gemini is not configured or an API request fails, the app can still show a local SHAP summary and contribution table.
+
+SHAP values describe how this model behaves relative to its reference data. They are not proof of causation, lending policy, or the real-world reasons an applicant should be approved or rejected. Correlated features can share attribution, and the result depends on the reference records and approximation settings.
 
 ## Repository structure
 
 ```text
 .
-├── app.py                         # Streamlit home page and project overview
+├── app.py                           # Streamlit home page and project overview
 ├── pages/
-│   ├── 1_Bagging_vs_Boosting.py   # Ensemble concepts and reported comparison
-│   ├── 2_Run_Experiment.py        # Upload, preprocess, train, and evaluate models
-│   ├── 3_Loan_Prediction.py       # Prediction using the saved model artifact
-│   └── 5_Fairness_Analysis.py    # Education and employment group comparisons
-├── ai_explainer.py                # Shared Gemini API helper for optional explanations
-├── model_explainer.py             # Model-agnostic local SHAP explanations
-├── utils.py                       # Dataset loading and target-label utilities
-├── ui_theme.py                    # Shared application styling and UI components
-├── loan_approval_dataset.csv      # Dataset used by the project
-├── loan_model.pkl                 # Serialized prediction model/pipeline
-├── requirements.txt               # Runtime dependencies
-├── requirements-dev.txt           # Test dependencies
+│   ├── 1_Bagging_vs_Boosting.py     # Ensemble concepts and reported metrics
+│   ├── 2_Run_Experiment.py          # CSV upload, preprocessing, training and evaluation
+│   ├── 3_Loan_Prediction.py         # Prediction using the saved model artifact
+│   └── 5_Fairness_Analysis.py       # Predefined education and employment comparisons
+├── ui_theme.py                      # Shared styling, sidebar branding and UI components
+├── utils.py                         # Dataset loading and binary-target utilities
+├── ai_explainer.py                  # Optional Gemini explanation helper
+├── model_explainer.py               # Local model-agnostic SHAP explanations
+├── loan_approval_dataset.csv        # Bundled project dataset
+├── loan_model.pkl                   # Serialized prediction model/pipeline
+├── requirements.txt                 # Application dependencies
+├── requirements-dev.txt             # Application dependencies plus test tools
+├── MODEL_CARD.md                    # Intended use, methodology and model limitations
+├── SECURITY.md                      # API-key and applicant-data guidance
 ├── tests/
-│   └── test_utils.py               # Binary-target normalization tests
+│   ├── test_utils.py                # Binary-target normalisation tests
+│   └── test_model_explainer.py       # SHAP explanation tests
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                  # Compile and unit-test checks
-├── SECURITY.md                    # API-key and applicant-data guidance
-└── .streamlit/
-    ├── config.toml                 # Streamlit visual theme
-    └── secrets.toml.example        # Local Gemini configuration template
+│       └── ci.yml                   # Compile and test checks on GitHub Actions
+├── .streamlit/
+│   ├── config.toml                  # Streamlit theme configuration
+│   └── secrets.toml.example         # Safe local Gemini secrets template
+└── .gitignore                       # Excludes secrets, caches and local files
 ```
 
-**Reproducibility note:** The saved model artifact is included, but a dedicated training script or notebook that recreates `loan_model.pkl` from the raw dataset is not currently included. The exact training procedure and artifact-generation steps should be added to the repository if full model-training reproducibility is required.
+The current flat layout is intentional for this small Streamlit project: the shared modules sit beside `app.py`, so page imports stay simple. A larger application could later introduce a package structure, but moving files now would add risk without a clear benefit.
 
 ## Run locally
+
+**Python 3.11 is used by the repository's GitHub Actions checks.**
 
 ### 1. Clone the repository
 
@@ -141,33 +164,33 @@ py -3.11 -m venv .venv
 **macOS / Linux**
 
 ```bash
-python3 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3. Install application dependencies
 
 ```bash
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-### 4. Start the Streamlit application
+### 4. Start the app
 
 ```bash
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
-Streamlit will print a local URL (usually `http://localhost:8501`) in the terminal.
+Open the local URL printed by Streamlit (usually <http://localhost:8501>).
 
-## Optional Gemini API configuration
+## Optional Gemini configuration
 
-Gemini is used only for natural-language explanations; the saved ML model performs the prediction. The application can still show the model result without a Gemini key. If Gemini is unavailable or its quota is exhausted, the AI explanation is skipped and the already-generated model prediction remains visible.
+Gemini is used only for natural-language explanations. The saved ML model performs the prediction, and the app remains usable without a Gemini API key.
 
-For a deployed Streamlit Community Cloud app:
+For the deployed Streamlit Community Cloud app:
 
 1. Open the app's **Settings → Secrets** panel.
-2. Add the following TOML entry:
+2. Add this TOML entry:
 
    ```toml
    GEMINI_API_KEY = "your-private-api-key"
@@ -175,50 +198,54 @@ For a deployed Streamlit Community Cloud app:
 
 3. Save the secret and allow the app to restart.
 
-For local testing, copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` and replace the placeholder. **Never commit the real secrets file, paste an API key into source code, or publish it in an issue or screenshot.** The repository's `.gitignore` excludes the local secrets file. See [SECURITY.md](SECURITY.md) for the data-handling notes.
+For local use, copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` and replace the placeholder with your key. The real secrets file is excluded by `.gitignore`.
 
-Gemini explanations are generated only after the user presses the explanation button. On the prediction page, the entered applicant features and model output are sent to Google's Gemini API for that explanation. Use synthetic demonstration data only. Gemini requests are subject to provider availability, account limits, and applicable pricing; an API key does not guarantee indefinite availability or unlimited use.
+**Privacy note:** When a user requests a Gemini explanation on the Loan Prediction page, the entered applicant feature values and model output are sent to Google's Gemini API. Use synthetic demonstration data only. Never enter real names, identity numbers, account details, or real financial records. See [SECURITY.md](SECURITY.md).
 
-## Important interpretation and limitations
+Gemini is subject to provider availability, account limits, and applicable pricing. An API key does not guarantee unlimited or uninterrupted access. If Gemini is unavailable, the local prediction and SHAP explanation remain separate from the optional narration.
 
-- The prediction is a model output, not a real credit decision or a recommendation.
-- A model probability is not necessarily a calibrated probability of repayment or approval in a different population.
-- The comparison values are reported values embedded in the comparison page. They should be independently reproduced before being treated as verified findings.
-- The fairness page currently displays predefined group-level metric values. It does **not** recalculate those metrics dynamically from the CSV on each page load; treat them as descriptive project figures, not a completed or independently validated fairness audit.
-- Group differences do not by themselves establish discrimination or explain their cause. A proper fairness assessment needs validated calculations, sample-size and uncertainty analysis, contextual review, and relevant legal/domain expertise.
-- The repository does not currently provide documented dataset provenance or a complete training script for recreating the saved model.
-- The serialized `.pkl` model should only be loaded from a trusted source and with compatible dependency versions.
+## Run quality checks
 
-## Technical stack
+Install the development dependencies (this also installs the application dependencies):
 
-- Python
-- Streamlit
-- pandas and NumPy
-- scikit-learn
-- Matplotlib
-- Joblib
-- SHAP (listed as a project dependency)
-- Google Gen AI SDK (optional Gemini explanations)
+```bash
+python -m pip install -r requirements-dev.txt
+```
 
-## Academic context
+Then run:
+
+```bash
+python -m compileall -q app.py ai_explainer.py model_explainer.py utils.py ui_theme.py pages
+python -m pytest -q
+```
+
+GitHub Actions runs the same compile and test checks for pushes and pull requests to `main`. The test suite covers binary-target normalisation and the local SHAP explanation logic.
+
+## Limitations and reproducibility
+
+- **Saved model:** `loan_model.pkl` is included, but the repository does not contain a complete training script or notebook that recreates it from the raw CSV. The exact training split, estimator configuration, and artifact-generation steps therefore cannot be fully reproduced from this repository alone.
+- **Comparison results:** the model-comparison values are hard-coded reported figures, not freshly generated results.
+- **Fairness page:** the group-level values are predefined in `pages/5_Fairness_Analysis.py`; they are not dynamically recalculated from the CSV on each page load. Treat them as descriptive reported figures, not a completed or independently validated fairness audit.
+- **External validation:** no independent external test-set results, confidence intervals, calibration analysis, or validation on another applicant population are documented.
+- **Dataset documentation:** original dataset provenance and redistribution permissions still need to be verified.
+- **Serialized model security:** only load the pickle/joblib artifact from a trusted source and use compatible dependency versions.
+
+A more complete future research release should document the dataset source and licence, add a reproducible training pipeline, regenerate the reported metrics from a clearly defined evaluation protocol, and calculate subgroup fairness metrics dynamically with sample sizes and uncertainty estimates.
+
+## Responsible use and security
+
+This project is intended for classroom demonstration of supervised learning, ensemble methods, model evaluation, and responsible interpretation of ML outputs.
+
+- Do not use it to make real credit or lending decisions.
+- Do not interpret a model probability as a calibrated probability of repayment or approval in a different population.
+- Group differences do not, by themselves, establish discrimination or explain its cause.
+- Keep API keys out of source code, commits, screenshots, and issue reports.
+- Use synthetic data for demonstrations and optional Gemini explanations.
+
+For more detail, read [MODEL_CARD.md](MODEL_CARD.md) and [SECURITY.md](SECURITY.md).
+
+---
 
 **Project:** Loan Approval Prediction — Bagging vs. Boosting  
 **Group:** Group 10  
 **Programme:** B.Tech CSE (AIML)
-
-The repository is maintained as an academic demonstration of supervised learning, ensemble methods, model evaluation, and responsible interpretation of ML outputs.
-
-
-## Quality checks
-
-The repository includes unit tests for binary-target encoding and a GitHub Actions workflow that compiles the Python source files and runs the tests on Python 3.11.
-
-Run the checks locally with:
-
-```bash
-pip install -r requirements-dev.txt
-python -m compileall -q app.py ai_explainer.py model_explainer.py utils.py ui_theme.py pages
-pytest -q
-```
-
-The test suite checks that numeric 0/1 labels keep their intended meaning, recognised approval/rejection labels map consistently, missing targets remain missing, and invalid single-class targets are rejected.
