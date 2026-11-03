@@ -15,7 +15,9 @@ The application is organised around four main activities:
 1. **Understand ensemble learning** — compare the concepts and reported validation metrics for Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting.
 2. **Run an experiment** — upload a binary-classification CSV, select a target, and evaluate five classifiers using stratified cross-validation.
 3. **Explore a prediction** — enter applicant attributes and obtain a prediction from the saved model artifact.
-4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.\n\nThe interface uses a shared, high-contrast glass visual theme and is designed to adapt to desktop and mobile screens.
+4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.
+
+The interface uses a shared, high-contrast glass visual theme and is designed to adapt to desktop and mobile screens.
 
 ## Application capabilities
 
