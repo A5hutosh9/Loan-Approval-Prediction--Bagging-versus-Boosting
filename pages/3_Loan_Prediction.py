@@ -1,3 +1,4 @@
+import html
 import pandas as pd
 import joblib
 import streamlit as st
@@ -264,11 +265,12 @@ State clearly that this is an academic demonstration and not a real bank decisio
 
         explanation = st.session_state.get("loan_ai_explanation")
         if explanation:
+            safe_explanation = html.escape(explanation).replace("\n", "<br>")
             st.markdown(
-                '<div class="ai-card"><div class="ai-label">GENERATED EXPLANATION</div></div>',
+                f'<div class="ai-card"><div class="ai-label">GENERATED EXPLANATION</div>'
+                f'<div style="line-height:1.75;">{safe_explanation}</div></div>',
                 unsafe_allow_html=True,
             )
-            st.markdown(explanation)
             st.caption(f"Generated with {st.session_state.get('loan_ai_model', 'Gemini Flash')}.")
 
     with details_tab:
