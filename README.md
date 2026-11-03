@@ -130,9 +130,12 @@ SHAP values describe how this model behaves relative to its reference data. They
 ├── tests/
 │   ├── test_utils.py                # Binary-target normalisation tests
 │   └── test_model_explainer.py       # SHAP explanation tests
+├── .devcontainer/
+│   └── devcontainer.json            # VS Code / GitHub Codespaces environment
 ├── .github/
 │   └── workflows/
 │       └── ci.yml                   # Compile and test checks on GitHub Actions
+├── pytest.ini                       # Pytest discovery and import configuration
 ├── .streamlit/
 │   ├── config.toml                  # Streamlit theme configuration
 │   └── secrets.toml.example         # Safe local Gemini secrets template
