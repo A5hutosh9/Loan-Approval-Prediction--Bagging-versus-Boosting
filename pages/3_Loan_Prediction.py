@@ -252,9 +252,9 @@ State clearly that this is an academic demonstration and not a real bank decisio
                 except Exception as error:
                     if is_quota_error(error):
                         st.error(
-                            "Gemini's current API quota has been reached. Your loan "
-                            "prediction is still complete. Try the explanation again "
-                            "after the quota resets."
+                            "Gemini's request limit or free-tier quota has been reached. Your "
+                            "prediction is still complete. Wait before trying again, or "
+                            "check your Gemini API usage."
                         )
                     else:
                         st.error(
