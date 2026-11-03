@@ -18,7 +18,7 @@ hero("Bharat Loan AI", "Loan approval prediction with Bagging, Boosting, and an 
 st.caption("PAGE 01 · PROJECT OVERVIEW")
 
 df = load_repository_dataset()
-rows = df.shape[0] if df is not None else 4269
+rows_label = f"{df.shape[0]:,}" if df is not None else "Unavailable"
 
 st.markdown("## PROJECT AT A GLANCE")
 st.write(
@@ -26,12 +26,12 @@ st.write(
     "or test an applicant using the saved model."
 )
 cols = st.columns(4)
-cols[0].metric("Dataset Records", f"{rows:,}")
+cols[0].metric("Dataset Records", rows_label)
 cols[1].metric("Models Studied", "5")
 cols[2].metric("Ensemble Approaches", "2")
 cols[3].metric("AI Explanation", "Optional Gemini")
 
-st.markdown("## DATASET CARD")
+if df is None:\n    st.warning("The bundled dataset CSV could not be loaded. The saved prediction model may still be available.")\n\nst.markdown("## DATASET CARD")
 st.markdown(
     """
     <div class="section-card">
