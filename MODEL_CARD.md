@@ -76,13 +76,13 @@ Differences between groups do not by themselves demonstrate discrimination or id
 
 ## Known limitations
 
-1. Dataset provenance and redistribution permissions are not documented in the repository.
+1. The source is attributed to Archit Sharma's Kaggle dataset, but the current licence terms and redistribution permission still need to be verified. The dataset's original collection process and representativeness are not established.
 2. A complete training script for recreating the saved model artifact is absent.
 3. The comparison-page metrics are embedded reported values rather than freshly computed values.
 4. The fairness-page metrics are predefined and are not dynamically recomputed from the dataset.
 5. No independent test-set, external-population, calibration, robustness, or uncertainty results are documented.
 6. SHAP explanations are local attributions relative to a reference sample, not causal explanations. Correlated features can share attribution, and results depend on the background sample and permutation approximation. Gemini is an optional narration layer; when configured, applicant inputs, model output, and SHAP contributions are sent to Google's Gemini API. Use synthetic demonstration data only. Gemini does not produce the prediction and its narrative is not evidence that the prediction is correct.
-7. Model outputs may reflect patterns and limitations in the training data and should not be generalised to other populations.
+7. The committed CSV contains 28 negative `residential_assets_value` values (minimum -100,000); their meaning should be checked before retraining or drawing conclusions.\n8. Model outputs may reflect patterns and limitations in the training data and should not be generalised to other populations.
 
 ## Responsible-use statement
 
