@@ -30,7 +30,7 @@ jobs:
           pip install -r requirements.txt pytest
 
       - name: Compile Python files
-        run: python -m compileall -q app.py ai_explainer.py utils.py ui_theme.py pages
+        run: python -m compileall -q app.py ai_explainer.py model_explainer.py utils.py ui_theme.py pages
 
       - name: Run unit tests
         run: pytest -q
