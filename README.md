@@ -27,7 +27,7 @@ The interface uses a shared Emerald Glass visual theme with subtle translucent p
 | Ensemble comparison | Explains Bagging and Boosting and shows the project's reported model metrics |
 | Experiment runner | Performs preprocessing, stratified cross-validation, metric reporting, ROC curves, and CSV export for an uploaded dataset |
 | Loan prediction | Uses `loan_model.pkl` to generate a class prediction and probability estimates from entered features |
-| AI explanation | Optionally uses the Gemini API to explain experiment or prediction outputs |
+| AI explanation | Uses local, model-agnostic SHAP attributions for individual loan predictions; Gemini optionally narrates those measured contributions |
 | Fairness analysis | Displays group-level metrics for education and self-employment categories |
 
 ## Dataset
@@ -44,6 +44,14 @@ The application describes the bundled dataset as **4,269 records and 13 columns*
 - Bank asset value
 
 The target is `loan_status` (Approved / Rejected). The source dataset also contains an identifier column; identifiers should not be treated as predictive financial characteristics.
+
+## Prediction explainability
+
+The prediction page calculates a local **SHAP permutation explanation** for the saved model pipeline. It treats the complete preprocessing/model pipeline as a black-box probability function, so it does not assume that the serialized artifact is a specific tree estimator. The explanation uses a deterministic sample of up to 40 records from the bundled dataset as the reference background.
+
+SHAP values show how the model's estimated approval probability moves up or down relative to the reference baseline for one input. The two categorical fields are numerically encoded only for SHAP's masking operation and are converted back to their original text values before the model is called. This keeps the estimator's own preprocessing in the prediction path.
+
+Gemini is now an optional narration layer grounded in these measured SHAP values. If Gemini is not configured or the API request fails, the app still shows a deterministic local SHAP summary and the feature-contribution table. The contributions explain this model's behaviour, not causation, bank policy, or the real-world reasons an applicant should be approved or rejected. Correlated features can share attribution, and results depend on the reference dataset and sampling settings.
 
 **Dataset provenance:** The repository currently contains the CSV but does not document its original publisher, download location, or redistribution terms. Those details should be verified and cited before the dataset is reused or redistributed outside this academic project.
 
