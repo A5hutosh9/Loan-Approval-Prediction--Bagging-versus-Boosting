@@ -90,7 +90,7 @@ The experiment page uses a fixed random seed for its cross-validation and model 
 ├── ui_theme.py                    # Shared application styling and UI components
 ├── loan_approval_dataset.csv      # Dataset used by the project
 ├── loan_model.pkl                 # Serialized prediction model/pipeline
-├── requirements.txt               # Pinned runtime dependencies
+├── requirements.txt               # Runtime dependencies
 ├── requirements-dev.txt           # Test dependencies
 ├── tests/
 │   └── test_utils.py               # Binary-target normalization tests
