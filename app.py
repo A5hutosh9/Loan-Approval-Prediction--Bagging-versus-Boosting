@@ -31,7 +31,10 @@ cols[1].metric("Models Studied", "5")
 cols[2].metric("Ensemble Approaches", "2")
 cols[3].metric("AI Explanation", "Optional Gemini")
 
-if df is None:\n    st.warning("The bundled dataset CSV could not be loaded. The saved prediction model may still be available.")\n\nst.markdown("## DATASET CARD")
+if df is None:
+    st.warning("The bundled dataset CSV could not be loaded. The saved prediction model may still be available.")
+
+st.markdown("## DATASET CARD")
 st.markdown(
     """
     <div class="section-card">
