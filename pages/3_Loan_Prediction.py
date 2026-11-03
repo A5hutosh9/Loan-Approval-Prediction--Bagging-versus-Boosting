@@ -224,28 +224,64 @@ if result:
                 use_container_width=True,
             ):
                 values = result["input_values"]
+                feature_labels = {
+                    "no_of_dependents": "Number of dependents",
+                    "education": "Education",
+                    "self_employed": "Self-employed",
+                    "income_annum": "Annual income (INR)",
+                    "loan_amount": "Requested loan amount (INR)",
+                    "loan_term": "Loan term (years)",
+                    "cibil_score": "CIBIL score",
+                    "residential_assets_value": "Residential assets (INR)",
+                    "commercial_assets_value": "Commercial assets (INR)",
+                    "luxury_assets_value": "Luxury assets (INR)",
+                    "bank_asset_value": "Bank assets (INR)",
+                }
+                feature_lines = "\\n".join(
+                    f"- {feature_labels.get(name, name)}: {value:,}" if isinstance(value, (int, float)) else f"- {feature_labels.get(name, name)}: {value}"
+                    for name, value in values.items()
+                )
                 prompt = f"""
-You are an educational assistant explaining a machine-learning project called
-Loan Approval Prediction: Bagging vs Boosting.
+ROLE
+You are a precise, student-friendly machine-learning tutor explaining one prediction
+from the academic project "Loan Approval Prediction: Bagging vs Boosting".
 
-The trained model has already made the prediction. Do not change, second-guess,
-or present a new lending decision.
-
-Prediction: {result["predicted_label"]}
+SOURCE OF TRUTH — USE ONLY THESE FACTS
+Predicted class: {result["predicted_label"]}
 Model approval probability: {result["approval_probability"]:.1%}
 Model rejection probability: {result["rejection_probability"]:.1%}
 Illustrative project risk band: {result["risk_band"]}
+Applicant inputs:
+{feature_lines}
 
-Applicant data:
-{values}
+TASK
+Write a specific explanation of THIS result, not a generic description of AI or banking.
+Use these sections, with short headings:
 
-Write a clear explanation of about 110-140 words for a college project reviewer.
-Explain the meaning of the model probability, describe that the listed applicant
-features were supplied to the trained preprocessing and ensemble pipeline, and
-summarise the workflow from input to model output. Do not claim that one specific
-feature caused the decision or invent feature importance, banking rules, or
-credit regulations. The application does not calculate feature-level attribution.
-State clearly that this is an academic demonstration and not a real bank decision.
+1. **Prediction** — state the model's predicted class and explain what that class means
+   in this classroom demonstration.
+2. **Probability interpretation** — explain both supplied probabilities. Make clear
+   they are the saved model's estimated class probabilities, not a guarantee, real-world
+   approval chance, or proof of model confidence/calibration.
+3. **Applicant information considered** — briefly group the actual supplied values
+   into credit, income/loan, employment/education, and asset details. Mention concrete
+   values from the input. Do NOT say any value caused, drove, increased, or reduced the
+   result because feature-level attribution has not been calculated.
+4. **How the prediction was produced** — explain that the inputs are passed to the
+   saved preprocessing/model pipeline, which returns a class and probabilities.
+5. **Important limitation** — state that this is an academic dataset demonstration,
+   not a bank decision or financial advice. The displayed risk band is an illustrative
+   threshold label, not an official banking risk grade.
+
+STRICT RULES
+- Do not invent feature importance, SHAP values, thresholds, banking rules, credit
+  regulations, missing applicant facts, or reasons for the prediction.
+- Do not reinterpret or change the predicted class or probabilities.
+- Do not call the applicant "low risk" or "high risk" as a factual credit assessment.
+- If the evidence does not support a causal explanation, say so plainly.
+- Use simple professional English suitable for a college project evaluator.
+- Be specific, readable, and concise: about 150–190 words.
+- Return only the explanation, with no greeting or disclaimer outside the sections.
 """
                 try:
                     with st.spinner("Gemini is preparing your explanation..."):
