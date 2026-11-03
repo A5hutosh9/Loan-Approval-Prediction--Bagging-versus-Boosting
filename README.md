@@ -15,7 +15,7 @@ The application is organised around four main activities:
 1. **Understand ensemble learning** — compare the concepts and reported validation metrics for Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting.
 2. **Run an experiment** — upload a binary-classification CSV, select a target, and evaluate five classifiers using stratified cross-validation.
 3. **Explore a prediction** — enter applicant attributes and obtain a prediction from the saved model artifact.
-4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.\n\nThe interface uses a shared dark glass visual theme and is designed to adapt to desktop and mobile screens.
+4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.\n\nThe interface uses a shared, high-contrast glass visual theme and is designed to adapt to desktop and mobile screens.
 
 ## Application capabilities
 
@@ -124,7 +124,7 @@ source .venv/bin/activate
 
 ```bash
 python -m pip install --upgrade pip
-pip install -r requirements-dev.txt  # includes runtime and test dependencies
+pip install -r requirements.txt
 ```
 
 ### 4. Start the Streamlit application
@@ -150,9 +150,9 @@ For a deployed Streamlit Community Cloud app:
 
 3. Save the secret and allow the app to restart.
 
-For local testing, use Streamlit's local secrets file at `.streamlit/secrets.toml` with the same TOML entry. **Never commit that file, paste an API key into source code, or publish it in an issue or screenshot.** The repository's `.gitignore` excludes the local secrets file.
+For local testing, copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` and replace the placeholder. **Never commit the real secrets file, paste an API key into source code, or publish it in an issue or screenshot.** The repository's `.gitignore` excludes the local secrets file. See [SECURITY.md](SECURITY.md) for the data-handling notes.
 
-Gemini requests are subject to the API provider's availability, account limits, and applicable pricing. An API key does not guarantee indefinite availability or unlimited use.
+Gemini explanations are generated only after the user presses the explanation button. On the prediction page, the entered applicant features and model output are sent to Google's Gemini API for that explanation. Use synthetic demonstration data only. Gemini requests are subject to provider availability, account limits, and applicable pricing; an API key does not guarantee indefinite availability or unlimited use.
 
 ## Important interpretation and limitations
 
