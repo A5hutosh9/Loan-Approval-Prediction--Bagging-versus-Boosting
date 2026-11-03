@@ -1,4 +1,5 @@
 import html
+import logging
 import pandas as pd
 import joblib
 import streamlit as st
@@ -9,6 +10,8 @@ from ai_explainer import (
     is_quota_error,
 )
 from ui_theme import apply_theme, sidebar_brand, hero
+
+logger = logging.getLogger(__name__)
 
 
 st.set_page_config(
@@ -262,7 +265,7 @@ State clearly that this is an academic demonstration and not a real bank decisio
                             "Gemini could not generate the explanation. Check the API "
                             "key and model access, then try again."
                         )
-                        st.caption(f"Technical detail: {error}")
+                        logger.exception("Gemini loan explanation failed")
 
         explanation = st.session_state.get("loan_ai_explanation")
         if explanation:
