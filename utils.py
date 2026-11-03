@@ -56,12 +56,11 @@ def normalize_binary_target(series):
         series = pd.Series(series)
 
     non_missing = series.dropna()
-    unique_original = list(pd.unique(non_missing))
-
-    if len(unique_original) != 2:
-        raise ValueError("Target column must contain exactly 2 non-missing classes.")
 
     if pd.api.types.is_numeric_dtype(series):
+        unique_original = list(pd.unique(non_missing))
+        if len(unique_original) != 2:
+            raise ValueError("Target column must contain exactly 2 non-missing classes.")
         if set(unique_original) == {0, 1}:
             mapping = {0: 0, 1: 1}
         else:
@@ -71,6 +70,8 @@ def normalize_binary_target(series):
 
     values = series.astype("string").str.strip().str.lower()
     unique = sorted(values.dropna().unique().tolist())
+    if len(unique) != 2:
+        raise ValueError("Target column must contain exactly 2 non-missing classes.")
 
     positive_words = {
         "approved", "approve", "yes", "y", "true", "accepted", "accept",
