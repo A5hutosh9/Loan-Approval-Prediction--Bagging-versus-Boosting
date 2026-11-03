@@ -113,6 +113,9 @@ def apply_theme():
         [data-testid="stSidebarNav"] a p {
             text-transform: capitalize !important;
             letter-spacing: .01em;
+            font-size: 14.5px !important;
+            font-weight: 600 !important;
+            line-height: 1.45 !important;
         }
 
         [data-testid="stSidebarNav"] a {
@@ -159,10 +162,37 @@ def apply_theme():
         }
         .bank-brand .tagline {
             color: #c3d8ed;
-            font-size: 9px;
-            letter-spacing: 1.2px;
+            font-size: 10px;
+            letter-spacing: 1.05px;
             text-transform: uppercase;
-            margin-top: 4px;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+
+        .team-credit {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 9px 11px;
+            border: 1px solid rgba(182, 227, 198, .20);
+            border-radius: 12px;
+            background: rgba(16, 24, 32, .30);
+        }
+        .team-credit-label {
+            color: #c5d7cd;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .9px;
+            text-transform: uppercase;
+        }
+        .team-credit-name {
+            color: #d8f5e2;
+            font-size: 16px;
+            font-weight: 850;
+            letter-spacing: .02em;
+            white-space: nowrap;
         }
 
         .tricolor {
@@ -715,6 +745,87 @@ def apply_theme():
             }
         }
 
+
+        /* Readability pass: clearer hierarchy and more comfortable text sizing. */
+        .stApp [data-testid="stMarkdownContainer"] p,
+        .stApp [data-testid="stMarkdownContainer"] li,
+        .stApp [data-testid="stText"] {
+            font-size: 15.5px !important;
+            line-height: 1.72 !important;
+            letter-spacing: .005em;
+        }
+        .stApp [data-testid="stMarkdownContainer"] li {
+            margin-bottom: 4px;
+        }
+        .stApp h1, .stApp [data-testid="stMarkdownContainer"] h1 {
+            font-size: clamp(1.9rem, 3vw, 2.35rem) !important;
+            line-height: 1.18 !important;
+            font-weight: 820 !important;
+        }
+        .stApp h2, .stApp [data-testid="stMarkdownContainer"] h2 {
+            font-size: 1.42rem !important;
+            line-height: 1.28 !important;
+            font-weight: 800 !important;
+            margin-top: 1.15rem;
+            margin-bottom: .55rem;
+        }
+        .stApp h3, .stApp [data-testid="stMarkdownContainer"] h3 {
+            font-size: 1.12rem !important;
+            line-height: 1.35 !important;
+            font-weight: 760 !important;
+        }
+        [data-testid="stCaptionContainer"],
+        .stCaption, small {
+            font-size: 13px !important;
+            line-height: 1.55 !important;
+        }
+        [data-testid="stWidgetLabel"],
+        [data-testid="stWidgetLabel"] p,
+        [data-testid="stWidgetLabel"] label,
+        [data-testid="stSidebar"] p,
+        [data-testid="stSidebar"] span,
+        [data-testid="stSidebar"] label {
+            font-size: 14px;
+            line-height: 1.5 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+            font-size: 12.5px !important;
+        }
+        .stButton > button, .stDownloadButton > button {
+            font-size: 14px !important;
+            letter-spacing: .01em;
+        }
+        [data-testid="stExpander"] summary {
+            font-size: 14.5px !important;
+            line-height: 1.45 !important;
+        }
+        [data-testid="stMetricLabel"],
+        [data-testid="stMetricLabel"] p {
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+            font-weight: 650 !important;
+        }
+        [data-testid="stMetricValue"],
+        [data-testid="stMetricValue"] div {
+            font-weight: 800 !important;
+        }
+        .section-subtitle, .workflow-text, .metric-note {
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+        }
+        .footer-card {
+            font-size: 12.5px !important;
+            line-height: 1.6 !important;
+        }
+        @media (max-width: 760px) {
+            .stApp [data-testid="stMarkdownContainer"] p,
+            .stApp [data-testid="stMarkdownContainer"] li {
+                font-size: 14.5px !important;
+                line-height: 1.65 !important;
+            }
+            .team-credit-name { font-size: 15px; }
+        }
+
         </style>
         """,
         unsafe_allow_html=True,
@@ -729,6 +840,10 @@ def sidebar_brand():
             <div class="logo">🏛️</div>
             <div class="name">BHARAT LOAN AI</div>
             <div class="tagline">ACADEMIC MACHINE-LEARNING PROJECT</div>
+            <div class="team-credit">
+                <span class="team-credit-label">Developed by</span>
+                <span class="team-credit-name">GROUP 10</span>
+            </div>
             <div class="tricolor"></div>
         </div>
         """,
