@@ -17,7 +17,7 @@ The application is organised around four main activities:
 3. **Explore a prediction** — enter applicant attributes and obtain a prediction from the saved model artifact.
 4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.
 
-The interface uses a shared, high-contrast glass visual theme and is designed to adapt to desktop and mobile screens.
+The interface uses a shared Emerald Glass visual theme with subtle translucent panels, responsive column layouts, wrapping metric values, and mobile-friendly tables and charts. The layout is designed for both desktop and phone screens.
 
 ## Application capabilities
 
