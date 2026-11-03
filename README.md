@@ -94,6 +94,7 @@ The experiment page uses a fixed random seed for its cross-validation and model 
 │   ├── 3_Loan_Prediction.py       # Prediction using the saved model artifact
 │   └── 5_Fairness_Analysis.py    # Education and employment group comparisons
 ├── ai_explainer.py                # Shared Gemini API helper for optional explanations
+├── model_explainer.py             # Model-agnostic local SHAP explanations
 ├── utils.py                       # Dataset loading and target-label utilities
 ├── ui_theme.py                    # Shared application styling and UI components
 ├── loan_approval_dataset.csv      # Dataset used by the project
@@ -210,7 +211,7 @@ Run the checks locally with:
 
 ```bash
 pip install -r requirements-dev.txt
-python -m compileall -q app.py ai_explainer.py utils.py ui_theme.py pages
+python -m compileall -q app.py ai_explainer.py model_explainer.py utils.py ui_theme.py pages
 pytest -q
 ```
 
