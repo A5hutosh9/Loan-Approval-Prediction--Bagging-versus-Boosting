@@ -1,4 +1,5 @@
 """Gemini explanation helper used by the experiment page."""
+import html
 import os
 import streamlit as st
 
@@ -23,6 +24,7 @@ def is_quota_error(error):
     message = str(error).lower()
     return any(token in message for token in (
         "quota", "resource_exhausted", "daily limit", "billing",
+        "429", "too_many_requests", "rate_limit", "rate limit",
     ))
 
 
@@ -121,6 +123,10 @@ Keep the explanation structured and under 220 words.
 
     explanation = st.session_state.get(explanation_key)
     if explanation:
-        st.markdown('<div class="ai-card"><div class="ai-label">GEMINI AI · EXPERIMENT REVIEW</div></div>', unsafe_allow_html=True)
-        st.markdown(explanation)
+        safe_explanation = html.escape(explanation).replace("\n", "<br>")
+        st.markdown(
+            f'<div class="ai-card"><div class="ai-label">GEMINI AI · EXPERIMENT REVIEW</div>'
+            f'<div style="line-height:1.75;">{safe_explanation}</div></div>',
+            unsafe_allow_html=True,
+        )
         st.caption(f"Generated with {st.session_state.get(model_key, 'Gemini Flash')}.")
