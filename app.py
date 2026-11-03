@@ -9,10 +9,6 @@ sidebar_brand()
 st.sidebar.markdown("**PROJECT NAVIGATION**")
 st.sidebar.caption("Academic machine-learning demonstration")
 st.sidebar.markdown("---")
-st.sidebar.markdown(
-    "<div style='color:#c9dcef;font-size:11px;font-weight:800;letter-spacing:.8px;'>DEVELOPED BY GROUP 10</div>",
-    unsafe_allow_html=True,
-)
 
 hero("Bharat Loan AI", "Loan approval prediction with Bagging, Boosting, and an optional Gemini explanation.")
 st.caption("PAGE 01 · PROJECT OVERVIEW")
