@@ -1,5 +1,7 @@
 import html
 import logging
+from pathlib import Path
+
 import pandas as pd
 import joblib
 import streamlit as st
@@ -35,7 +37,7 @@ st.info(
 
 @st.cache_resource
 def load_model():
-    return joblib.load("loan_model.pkl")
+    return joblib.load(Path(__file__).resolve().parents[1] / "loan_model.pkl")
 
 
 try:
