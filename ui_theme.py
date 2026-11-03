@@ -110,6 +110,11 @@ def apply_theme():
             padding: 8px 10px 16px;
         }
 
+        [data-testid="stSidebarNav"] a p {
+            text-transform: capitalize !important;
+            letter-spacing: .01em;
+        }
+
         [data-testid="stSidebarNav"] a {
             border: 1px solid transparent;
             border-radius: 12px;
