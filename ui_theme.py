@@ -826,6 +826,199 @@ def apply_theme():
             .team-credit-name { font-size: 15px; }
         }
 
+
+        /* Stable Emerald theme during page reruns and navigation. */
+        html, body {
+            background: #101820 !important;
+            color-scheme: dark;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        html, body, [class*="css"] {
+            font-family: "Source Sans 3", "Source Sans", system-ui, sans-serif !important;
+        }
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"],
+        [data-testid="stSidebar"] {
+            color: #f3f7f2 !important;
+            background-color: #101820 !important;
+        }
+        [data-testid="stAppViewContainer"] {
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(22, 140, 117, .17), transparent 36%),
+                radial-gradient(ellipse at 92% 10%, rgba(182, 227, 198, .07), transparent 30%),
+                linear-gradient(145deg, #101820 0%, #172923 55%, #101820 100%) !important;
+        }
+
+        /* Streamlit's rerun/loading indicator uses the same accent as the app. */
+        [data-testid="stDecoration"] {
+            background: linear-gradient(90deg, #126e5c, #168c75, #b6e3c6) !important;
+        }
+        [data-testid="stStatusWidget"] {
+            color: #b6e3c6 !important;
+        }
+        [data-testid="stStatusWidget"] svg {
+            color: #b6e3c6 !important;
+        }
+
+        /* Calm sidebar navigation: no blue focus flash or lateral jump. */
+        [data-testid="stSidebarNav"] a {
+            border-radius: 12px !important;
+            transform: none !important;
+            transition: background-color .14s ease, border-color .14s ease,
+                        box-shadow .14s ease !important;
+            -webkit-tap-highlight-color: rgba(22, 140, 117, .16);
+            touch-action: manipulation;
+        }
+        [data-testid="stSidebarNav"] a:hover {
+            background: rgba(182, 227, 198, .09) !important;
+            border-color: rgba(182, 227, 198, .20) !important;
+            transform: none !important;
+        }
+        [data-testid="stSidebarNav"] a:active {
+            background: rgba(22, 140, 117, .24) !important;
+        }
+        [data-testid="stSidebarNav"] a[aria-current="page"] {
+            background: rgba(22, 140, 117, .20) !important;
+            border-color: rgba(116, 205, 169, .34) !important;
+            box-shadow: inset 3px 0 0 #168c75 !important;
+        }
+        [data-testid="stSidebarNav"] a:focus-visible,
+        .stApp button:focus-visible,
+        .stApp input:focus-visible,
+        .stApp textarea:focus-visible,
+        .stApp select:focus-visible {
+            outline: 2px solid #b6e3c6 !important;
+            outline-offset: 2px !important;
+            box-shadow: 0 0 0 3px rgba(22, 140, 117, .18) !important;
+        }
+        .stApp a, .stApp a:visited {
+            color: #b6e3c6 !important;
+        }
+
+        /* Shared readable typography across all Streamlit pages and widgets. */
+        .stApp [data-testid="stMarkdownContainer"] p,
+        .stApp [data-testid="stMarkdownContainer"] li,
+        .stApp [data-testid="stText"] {
+            font-size: 16px !important;
+            line-height: 1.68 !important;
+            letter-spacing: .005em;
+        }
+        .stApp [data-testid="stMarkdownContainer"] li {
+            margin-bottom: 5px;
+        }
+        .stApp [data-testid="stMarkdownContainer"] h1,
+        .stApp h1 {
+            font-size: clamp(29px, 3.5vw, 36px) !important;
+            line-height: 1.16 !important;
+            font-weight: 800 !important;
+        }
+        .stApp [data-testid="stMarkdownContainer"] h2,
+        .stApp h2 {
+            font-size: clamp(21px, 2.3vw, 25px) !important;
+            line-height: 1.25 !important;
+            font-weight: 780 !important;
+        }
+        .stApp [data-testid="stMarkdownContainer"] h3,
+        .stApp h3 {
+            font-size: clamp(18px, 2vw, 21px) !important;
+            line-height: 1.32 !important;
+            font-weight: 750 !important;
+        }
+        [data-testid="stCaptionContainer"], .stCaption, small {
+            font-size: 13.5px !important;
+            line-height: 1.55 !important;
+        }
+        [data-testid="stWidgetLabel"],
+        [data-testid="stWidgetLabel"] p,
+        [data-testid="stWidgetLabel"] label,
+        .stApp label {
+            font-size: 15px !important;
+            line-height: 1.45 !important;
+            font-weight: 600 !important;
+        }
+        [data-testid="stSidebarNav"] a p {
+            font-size: 15px !important;
+            font-weight: 650 !important;
+            line-height: 1.5 !important;
+        }
+        [data-testid="stMetricLabel"], [data-testid="stMetricLabel"] p {
+            font-size: 13.5px !important;
+            line-height: 1.4 !important;
+        }
+        [data-testid="stMetricValue"], [data-testid="stMetricValue"] div {
+            font-weight: 800 !important;
+            line-height: 1.2 !important;
+        }
+        .section-subtitle, .workflow-text, .metric-note {
+            font-size: 13.5px !important;
+            line-height: 1.6 !important;
+        }
+        .footer-card {
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* Consistent team identity in the shared sidebar brand on every page. */
+        .bank-brand {
+            background: linear-gradient(145deg, rgba(38, 58, 54, .66), rgba(22, 54, 45, .56)) !important;
+            border-color: rgba(182, 227, 198, .22) !important;
+        }
+        .bank-brand .name {
+            font-size: 20px !important;
+            font-weight: 800 !important;
+            color: #f3f7f2 !important;
+        }
+        .team-credit {
+            margin-top: 13px !important;
+            background: rgba(16, 24, 32, .48) !important;
+            border-color: rgba(182, 227, 198, .26) !important;
+            align-items: center !important;
+        }
+        .team-credit-label {
+            font-size: 11px !important;
+            color: #c5d7cd !important;
+        }
+        .team-credit-name {
+            font-size: 17px !important;
+            font-weight: 850 !important;
+            color: #b6e3c6 !important;
+            letter-spacing: .04em !important;
+        }
+        .bank-brand .tagline {
+            color: #c5d7cd !important;
+            font-size: 10.5px !important;
+            line-height: 1.5 !important;
+        }
+
+        @media (max-width: 760px) {
+            .stApp [data-testid="stMarkdownContainer"] p,
+            .stApp [data-testid="stMarkdownContainer"] li,
+            .stApp [data-testid="stText"] {
+                font-size: 15px !important;
+                line-height: 1.62 !important;
+            }
+            .stApp [data-testid="stMarkdownContainer"] h1,
+            .stApp h1 { font-size: 28px !important; }
+            .stApp [data-testid="stMarkdownContainer"] h2,
+            .stApp h2 { font-size: 21px !important; }
+            .stApp [data-testid="stMarkdownContainer"] h3,
+            .stApp h3 { font-size: 18px !important; }
+            [data-testid="stWidgetLabel"],
+            [data-testid="stWidgetLabel"] p,
+            [data-testid="stWidgetLabel"] label,
+            .stApp label { font-size: 14.5px !important; }
+            [data-testid="stSidebarNav"] a p { font-size: 14.5px !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
+
         </style>
         """,
         unsafe_allow_html=True,
