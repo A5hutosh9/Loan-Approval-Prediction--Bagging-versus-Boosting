@@ -22,9 +22,11 @@ Do not use this prototype to make or support real lending decisions, credit elig
 - Dataset dimensions stated in the application: 4,269 rows × 13 columns.
 - Target: `loan_status` (Approved / Rejected).
 - Predictors used by the prediction interface: dependents, education, self-employment, annual income, loan amount, loan term, CIBIL score, residential assets, commercial assets, luxury assets, and bank assets.
-- The source dataset's original publisher, collection process, licence, and representativeness are not documented in the current repository.
-
-Before using the data beyond the present academic demonstration, document its source, collection context, permission/licence, class distribution, missingness, and known limitations.
+- Source: [Loan Approval Prediction Dataset by Archit Sharma on Kaggle](https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset).
+- Observed target counts in the committed file: 2,656 Approved and 1,613 Rejected.
+- A scan of the committed file found 28 negative values in `residential_assets_value` (minimum: -100,000). These values need source-level investigation; they should not be silently changed.
+- The current Kaggle page's licence metadata was not independently verifiable during this review. Check the displayed licence/terms before redistribution.
+- The dataset's collection process and representativeness are not established by the repository. Treat it as a teaching dataset, not a representative sample of actual lending decisions.
 
 ## Model and workflow
 
