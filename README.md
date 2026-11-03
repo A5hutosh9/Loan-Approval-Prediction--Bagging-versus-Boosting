@@ -6,6 +6,12 @@ An academic machine-learning project that studies ensemble classification method
 
 > **Academic-use notice:** This repository is an educational prototype. It is not a bank, credit bureau, underwriting system, or financial-advice service. Its predictions must not be used to approve, reject, price, or otherwise make decisions about real loan applicants.
 
+## Live Demo
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://loan-approval-prediction-bagging-vs-boosting.streamlit.app)
+
+[Open Loan Approval Prediction App](https://loan-approval-prediction-bagging-vs-boosting.streamlit.app)
+
 ## Project overview
 
 The project explores how **Bagging** and **Boosting** approaches behave on a binary loan-status classification task. The repository includes a saved prediction pipeline, a dataset, a multi-page Streamlit interface, an experiment workflow for uploaded CSV files, and an optional Gemini-powered explanation layer.
