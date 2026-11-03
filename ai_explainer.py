@@ -1,5 +1,4 @@
-"""Gemini explanation helper used by the experiment page."""
-import html
+"""Shared Gemini helper for optional AI explanations."""
 import logging
 import os
 import streamlit as st
@@ -126,10 +125,7 @@ Keep the explanation structured and under 220 words.
 
     explanation = st.session_state.get(explanation_key)
     if explanation:
-        safe_explanation = html.escape(explanation).replace("\n", "<br>")
-        st.markdown(
-            f'<div class="ai-card"><div class="ai-label">GEMINI AI · EXPERIMENT REVIEW</div>'
-            f'<div style="line-height:1.75;">{safe_explanation}</div></div>',
-            unsafe_allow_html=True,
-        )
-        st.caption(f"Generated with {st.session_state.get(model_key, 'Gemini Flash')}.")
+        with st.container(border=True):
+            st.markdown("**GEMINI AI · EXPERIMENT REVIEW**")
+            st.markdown(explanation)
+            st.caption(f"Generated with {st.session_state.get(model_key, 'Gemini Flash')}.")
