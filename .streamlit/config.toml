@@ -1,10 +1,27 @@
 [theme]
 base = "dark"
-primaryColor = "#55A8FF"
-backgroundColor = "#06111F"
-secondaryBackgroundColor = "#102B44"
-textColor = "#F2F7FF"
-font = "sans serif"
+primaryColor = "#168C75"
+backgroundColor = "#101820"
+secondaryBackgroundColor = "#1C302A"
+textColor = "#F3F7F2"
+font = "sans-serif"
+headingFont = "sans-serif"
+codeFont = "monospace"
+baseFontSize = 17
+baseFontWeight = 400
+metricValueFontSize = "1.7rem"
+metricValueFontWeight = 700
+borderColor = "#344D43"
+showSidebarBorder = true
+showWidgetBorder = true
+
+[theme.sidebar]
+backgroundColor = "#111F1B"
+secondaryBackgroundColor = "#1B2E28"
+textColor = "#F3F7F2"
+primaryColor = "#168C75"
+font = "sans-serif"
+headingFont = "sans-serif"
 
 [server]
 headless = true
