@@ -103,11 +103,23 @@ Target: {target_column}.
 Use only these supplied results:
 {metrics_csv}
 
-Explain accuracy, F1-score, ROC-AUC, the train-validation gap, and the main
-limitations in plain English. Do not invent values, causes, or feature importance.
-Do not claim one model is universally best. State that results depend on this
-dataset and validation design and are not real-world lending guarantees.
-Keep the explanation structured and under 220 words.
+Write a specific, evidence-based interpretation of the supplied experiment results.
+Use these short sections:
+1. Overall comparison: identify the highest validation accuracy, F1 and ROC-AUC
+   from the supplied table, naming the model and exact values for each. A model may
+   lead on one metric but not another.
+2. What the metrics mean: explain accuracy, F1 and ROC-AUC in plain English, including
+   that F1 and ROC-AUC treat encoded class 1 as the positive class.
+3. Generalisation: compare train and validation scores and the supplied gaps. Point
+   out unusually large gaps only when visible in the data; do not assume a small gap
+   proves the model generalises to new populations.
+4. Limitations: this is cross-validation on the uploaded dataset, not independent
+   external validation. Mention class imbalance or metric limitations only if the
+   supplied information supports it.
+Rules: use only the supplied rows, dataset dimensions and target name; quote exact
+numbers accurately; do not invent feature importance, causes, or a winner across all
+criteria; do not give lending advice or claim real-world suitability. Explain any
+trade-off rather than simply declaring one model "best". Keep it under 250 words.
 """
         try:
             with st.spinner("Gemini is preparing the explanation..."):
