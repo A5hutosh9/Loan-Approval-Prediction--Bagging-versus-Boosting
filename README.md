@@ -90,9 +90,17 @@ The experiment page uses a fixed random seed for its cross-validation and model 
 ├── ui_theme.py                    # Shared application styling and UI components
 ├── loan_approval_dataset.csv      # Dataset used by the project
 ├── loan_model.pkl                 # Serialized prediction model/pipeline
-├── requirements.txt               # Pinned runtime dependencies\n├── requirements-dev.txt           # Test dependencies\n├── tests/\n│   └── test_utils.py               # Binary-target normalization tests\n├── .github/workflows/ci.yml        # Compile and unit-test checks
+├── requirements.txt               # Pinned runtime dependencies
+├── requirements-dev.txt           # Test dependencies
+├── tests/
+│   └── test_utils.py               # Binary-target normalization tests
+├── .github/
+│   └── workflows/
+│       └── ci.yml                  # Compile and unit-test checks
+├── SECURITY.md                    # API-key and applicant-data guidance
 └── .streamlit/
-    └── config.toml                # Streamlit visual theme
+    ├── config.toml                 # Streamlit visual theme
+    └── secrets.toml.example        # Local Gemini configuration template
 ```
 
 **Reproducibility note:** The saved model artifact is included, but a dedicated training script or notebook that recreates `loan_model.pkl` from the raw dataset is not currently included. The exact training procedure and artifact-generation steps should be added to the repository if full model-training reproducibility is required.
