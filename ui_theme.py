@@ -1020,84 +1020,135 @@ def apply_theme():
         }
 
 
-        /* Sidebar fit fix for narrow phones: keep team credit readable. */
-        [data-testid="stSidebar"] {
-            width: 205px !important;
-            min-width: 205px !important;
-            flex: 0 0 205px !important;
+        /* Responsive sidebar: allow full labels and a clean team-credit card. */
+        [data-testid="stSidebar"][aria-expanded="true"] {
+            width: 230px !important;
+            min-width: 230px !important;
+            max-width: 230px !important;
+            flex: 0 0 230px !important;
+        }
+        [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+            width: 230px !important;
+            min-width: 230px !important;
+            max-width: 230px !important;
+        }
+        [data-testid="stSidebarContent"] {
+            width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
         }
         [data-testid="stSidebarNav"] {
-            padding-left: 8px !important;
-            padding-right: 8px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            padding: 8px 0 16px !important;
         }
         [data-testid="stSidebarNav"] a {
+            display: flex !important;
+            width: 100% !important;
             min-width: 0 !important;
-            padding: 8px 9px !important;
+            box-sizing: border-box !important;
+            padding: 9px 10px !important;
             margin: 4px 0 !important;
+            border-radius: 10px !important;
             transform: none !important;
+            transition: background-color .14s ease, border-color .14s ease !important;
         }
-        [data-testid="stSidebarNav"] a p {
+        [data-testid="stSidebarNav"] a > div,
+        [data-testid="stSidebarNav"] a p,
+        [data-testid="stSidebarNav"] a span {
+            min-width: 0 !important;
+            max-width: 100% !important;
             white-space: normal !important;
             overflow: visible !important;
             text-overflow: clip !important;
-            overflow-wrap: anywhere !important;
+            overflow-wrap: break-word !important;
             word-break: normal !important;
-            font-size: 13.5px !important;
+            font-size: 14px !important;
             line-height: 1.4 !important;
         }
+        [data-testid="stSidebarNav"] a[aria-current="page"] {
+            background: rgba(22, 140, 117, .20) !important;
+            border: 1px solid rgba(116, 205, 169, .34) !important;
+            box-shadow: inset 3px 0 0 #168c75 !important;
+        }
+        [data-testid="stSidebarNav"] a:hover {
+            background: rgba(182, 227, 198, .09) !important;
+            border-color: rgba(182, 227, 198, .20) !important;
+        }
         .bank-brand {
+            display: block !important;
             box-sizing: border-box !important;
             width: 100% !important;
+            min-width: 0 !important;
             padding: 14px 12px !important;
+            margin: 8px 0 16px !important;
             overflow: hidden !important;
+            border-radius: 16px !important;
         }
+        .bank-brand .logo { font-size: 25px !important; }
         .bank-brand .name {
+            display: block !important;
             font-size: 17px !important;
-            line-height: 1.25 !important;
+            line-height: 1.3 !important;
             overflow-wrap: normal !important;
             word-break: normal !important;
         }
         .bank-brand .tagline {
+            display: block !important;
             font-size: 9px !important;
-            letter-spacing: .7px !important;
+            line-height: 1.45 !important;
+            letter-spacing: .65px !important;
+            overflow-wrap: normal !important;
         }
         .team-credit {
             display: flex !important;
             flex-direction: column !important;
             align-items: flex-start !important;
             justify-content: center !important;
-            gap: 4px !important;
+            gap: 5px !important;
             width: 100% !important;
+            min-width: 0 !important;
             box-sizing: border-box !important;
-            padding: 9px 10px !important;
-            overflow: visible !important;
+            padding: 10px 10px !important;
+            margin-top: 12px !important;
+            overflow: hidden !important;
+            border-radius: 10px !important;
         }
         .team-credit-label {
             display: block !important;
             width: 100% !important;
             font-size: 10px !important;
             line-height: 1.3 !important;
-            letter-spacing: .8px !important;
+            letter-spacing: .75px !important;
             white-space: nowrap !important;
-            overflow-wrap: normal !important;
+            overflow: visible !important;
         }
         .team-credit-name {
             display: block !important;
             width: 100% !important;
             font-size: 17px !important;
+            font-weight: 850 !important;
             line-height: 1.25 !important;
+            letter-spacing: .04em !important;
             white-space: nowrap !important;
             overflow: visible !important;
-            overflow-wrap: normal !important;
-            letter-spacing: .04em !important;
         }
         @media (max-width: 760px) {
-            [data-testid="stSidebar"] {
-                width: 205px !important;
-                min-width: 205px !important;
-                flex-basis: 205px !important;
+            [data-testid="stSidebar"][aria-expanded="true"] {
+                width: min(230px, 82vw) !important;
+                min-width: min(230px, 82vw) !important;
+                max-width: min(230px, 82vw) !important;
+                flex-basis: min(230px, 82vw) !important;
             }
-            [data-testid="stSidebarNav"] a p {
+            [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+                width: min(230px, 82vw) !important;
+                min-width: min(230px, 82vw) !important;
+                max-width: min(230px, 82vw) !important;
+            }
+            [data-testid="stSidebarNav"] a p,
+            [data-testid="stSidebarNav"] a span {
                 font-size: 13.5px !important;
             }
             .bank-brand .name { font-size: 17px !important; }
