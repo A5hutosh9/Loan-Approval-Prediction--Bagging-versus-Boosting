@@ -15,7 +15,7 @@ The application is organised around four main activities:
 1. **Understand ensemble learning** — compare the concepts and reported validation metrics for Decision Tree, Bagging, Random Forest, AdaBoost, and Gradient Boosting.
 2. **Run an experiment** — upload a binary-classification CSV, select a target, and evaluate five classifiers using stratified cross-validation.
 3. **Explore a prediction** — enter applicant attributes and obtain a prediction from the saved model artifact.
-4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.
+4. **Review group metrics** — inspect the education and self-employment comparisons included in the fairness page.\n\nThe interface uses a shared dark glass visual theme and is designed to adapt to desktop and mobile screens.
 
 ## Application capabilities
 
@@ -83,12 +83,12 @@ The experiment page uses a fixed random seed for its cross-validation and model 
 │   ├── 2_Run_Experiment.py        # Upload, preprocess, train, and evaluate models
 │   ├── 3_Loan_Prediction.py       # Prediction using the saved model artifact
 │   └── 5_Fairness_Analysis.py    # Education and employment group comparisons
-├── ai_explainer.py                # Gemini explanation helper for experiment results
+├── ai_explainer.py                # Shared Gemini API helper for optional explanations
 ├── utils.py                       # Dataset loading and target-label utilities
 ├── ui_theme.py                    # Shared application styling and UI components
 ├── loan_approval_dataset.csv      # Dataset used by the project
 ├── loan_model.pkl                 # Serialized prediction model/pipeline
-├── requirements.txt               # Python dependencies
+├── requirements.txt               # Pinned runtime dependencies\n├── requirements-dev.txt           # Test dependencies\n├── tests/\n│   └── test_utils.py               # Binary-target normalization tests\n├── .github/workflows/ci.yml        # Compile and unit-test checks
 └── .streamlit/
     └── config.toml                # Streamlit visual theme
 ```
@@ -124,7 +124,7 @@ source .venv/bin/activate
 
 ```bash
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-dev.txt  # includes runtime and test dependencies
 ```
 
 ### 4. Start the Streamlit application
@@ -137,7 +137,7 @@ Streamlit will print a local URL (usually `http://localhost:8501`) in the termin
 
 ## Optional Gemini API configuration
 
-Gemini is used only for natural-language explanations; the saved ML model performs the prediction. The application can still show the model result without a Gemini key, and the prediction page includes a local fallback explanation when Gemini is unavailable.
+Gemini is used only for natural-language explanations; the saved ML model performs the prediction. The application can still show the model result without a Gemini key. If Gemini is unavailable or its quota is exhausted, the AI explanation is skipped and the already-generated model prediction remains visible.
 
 For a deployed Streamlit Community Cloud app:
 
@@ -182,3 +182,18 @@ Gemini requests are subject to the API provider's availability, account limits, 
 **Programme:** B.Tech CSE (AIML)
 
 The repository is maintained as an academic demonstration of supervised learning, ensemble methods, model evaluation, and responsible interpretation of ML outputs.
+
+
+## Quality checks
+
+The repository includes unit tests for binary-target encoding and a GitHub Actions workflow that compiles the Python source files and runs the tests on Python 3.11.
+
+Run the checks locally with:
+
+```bash
+pip install -r requirements-dev.txt
+python -m compileall -q app.py ai_explainer.py utils.py ui_theme.py pages
+pytest -q
+```
+
+The test suite checks that numeric 0/1 labels keep their intended meaning, recognised approval/rejection labels map consistently, missing targets remain missing, and invalid single-class targets are rejected.
